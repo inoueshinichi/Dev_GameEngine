@@ -1,0 +1,2 @@
+# Dev_Win32NativeGuiApp
+Win32APIのオブジェクト指向ラッパーGUIモジュールの開発
