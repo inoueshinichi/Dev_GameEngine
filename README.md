@@ -13,7 +13,7 @@ Win32APIのオブジェクト指向プログラムとXAML_UI(UWP)の融合
 + \>= Windows 10 1903
 + Visual Studio 2019
 + C++17
-+ Windows SDK (Windows API, Windows Runtime API(`WinRT`))
++ />= Windows SDK (Windows API, Windows Runtime API(`WinRT`)) 10.0.17134.0
 + `XAML Island` Component of WinRT (XAML IslandはWinUI2なので非推奨)
 
 
