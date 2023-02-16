@@ -18,7 +18,7 @@ namespace is
     {
         struct IS_WIN_API Cursor
         {
-            HCORSOR hCorsor;
+            HCURSOR hCursor;
         };
     }
 }

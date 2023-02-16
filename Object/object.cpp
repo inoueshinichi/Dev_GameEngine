@@ -31,7 +31,7 @@ namespace is
 
     void Object::RemoveChild(Object *child)
     {
-        auto iter = std::find(mChildrent.begin(), mChildrent.end(), child);
+        auto iter = std::find(mChildren.begin(), mChildren.end(), child);
         if (iter != mChildren.end())
         {
             std::iter_swap(iter, mChildren.end() - 1);

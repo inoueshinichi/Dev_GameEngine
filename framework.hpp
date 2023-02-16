@@ -58,7 +58,7 @@
 // 名称かぶり対策-2
 
 
-// #include "resource.h"
+#include "resource.h"
 
 using namespace winrt;
 using namespace Windows::UI;

@@ -25,7 +25,7 @@ namespace is
 {
     /* Windows-APIに関する例外スロー */
 #define IS_WIN_API_ERROR(winErrorCode, msg, ...)                                      \
-    throw WinApiException(winErrorCode, is::common::FormatString(msg, ##__VA_ARGS__), \
+    throw WinApiException(winErrorCode, is::FormatString(msg, ##__VA_ARGS__), \
                           __func__, __FILE__, __LINE__);
 
 #define IS_WIN_API_CHECK(winErrorCode, msg, ...)                                                        \
@@ -37,7 +37,7 @@ namespace is
 #define IS_WIN_API_FORCE_ASSERT(winErrorCode, msg, ...)                           \
     if (winErrorCode != NO_ERROR)                                                 \
     {                                                                             \
-        std::cerr << "Aborting: " << is::common::FormatString(msg, ##__VA_ARGS__) \
+        std::cerr << "Aborting: " << is::FormatString(msg, ##__VA_ARGS__)         \
                   << " at " << __func__                                           \
                   << " in " << __FILE__                                           \
                   << ":" << __LINE__                                              \
@@ -113,9 +113,9 @@ namespace is
     {
     protected:
         ATL::CString mFullMsg; // 表示されるFullメッセージ
-        ATL::CString mMsg;     // エラーメッセージ
-        ATL::CString mFunc;    // エラーが発生した関数名
-        ATL::CString mFile;    // エラーが発生したファイル名
+        std::string mMsg;      // エラーメッセージ
+        std::string mFunc;     // エラーが発生した関数名
+        std::string mFile;     // エラーが発生したファイル名
         int mLine;             // エラーが発生した行番号
 
         DWORD mWinApiErrorCode;
@@ -127,20 +127,20 @@ namespace is
 #if (defined(UNICODE) || defined(_UNICODE)) && !defined(_MBCS)
             std::wostringstream woss;
             woss << GetWinApiErrorString(mWinApiErrorCode).GetString() << L" in "
-                 << mFunc.GetString() << L":" << mLine << std::endl;
-            woss << mMsg.GetString() << std::endl;
+                 << is::CvtShiftJisToUtf16(mFunc) << L":" << mLine << std::endl;
+            woss << is::CvtShiftJisToUtf16(mMsg) << std::endl;
             mFullMsg = woss.str().c_str();
 #else
             std::ostringstream oss;
             oss << GetWinApiErrorString(mWinApiErrorCode).GetString() << " in "
-                << mFunc.GetString() << ":" << mLine << std::endl;
-            oss << mMsg.GetString() << std::endl;
+                << mFunc << ":" << mLine << std::endl;
+            oss << mMsg << std::endl;
             mFullMsg = oss.str().c_str();
 #endif
         }
 
         virtual ~WinApiException() noexcept {}
-        virtual LPTCSTR What() const noexcept { return mFullMsg.GetString(); }
+        virtual const TCHAR *What() const noexcept { return mFullMsg.GetString(); }
         DWORD GetWinError() const { return mWinApiErrorCode; }
     };
 }

@@ -93,7 +93,7 @@ namespace is
         static SingletonManager &GetSelf();
 
         /**
-         * @brief 再帰ロック可能なミューテックスを取得
+         * @brief ロック可能なミューテックスを取得
          * @note 追加 Shinichi Inoue 21/2/5
          * @return std::mutex&
          */

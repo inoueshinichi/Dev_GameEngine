@@ -32,8 +32,8 @@
 namespace is
 {
     /* Windows-COMに関する例外スロー */
-#define IS_COM_HR_ERROR(hr, msg, ...)                                      \
-    throw ComHrException(hr, is::common::FormatString(msg, ##__VA_ARGS__), \
+#define IS_COM_HR_ERROR(hr, msg, ...)                              \
+    throw ComHrException(hr, is::FormatString(msg, ##__VA_ARGS__), \
                     __func__, __FILE__, __LINE__);
 
 #define IS_COM_HR_CHECK(hr, msg, ...)                                               \
@@ -45,7 +45,7 @@ namespace is
 #define IS_COM_HR_FORCE_ASSERT(hr, msg, ...)                                      \
     if (FAILED(hr))                                                               \
     {                                                                             \
-        std::cerr << "Aborting: " << is::common::FormatString(msg, ##__VA_ARGS__) \
+        std::cerr << "Aborting: " << is::FormatString(msg, ##__VA_ARGS__)         \
                   << " at " << __func__                                           \
                   << " in " << __FILE__                                           \
                   << ":" << __LINE__                                              \
@@ -53,7 +53,7 @@ namespace is
         std::abort();                                                             \
     }
 
-    inline ATL::CString GetComHrErrorString(HRESULT hr)
+    inline std::string GetComHrErrorString(HRESULT hr)
     {
         /* ShiftJisでメッセージ作成 */
         int size = std::snprintf(nullptr, 0, "HRESULT of 0x%08X", static_cast<UINT>(hr));
@@ -70,21 +70,11 @@ namespace is
         std::vector<char> buf(bufSize);
 
         /* 文字列のフォーマット */
-        std::snprintf(buf.data(), buf_size, "HRESULT of 0x%08X", static_cast<UINT>(hr));
+        std::snprintf(buf.data(), bufSize, "HRESULT of 0x%08X", static_cast<UINT>(hr));
 
         /* ShiftJisメッセージ */
         std::string msg(buf.data(), buf.data() + size);
-        ATL::CString retMsg;
-
-#if (defined(UNICODE) || defined(_UNICODE)) && !defined(_MBCS)
-        // ShiftJis -> UTF-16
-        std::wstring tmpMsg = CvtShiftJisToUtf16(msg);
-        retMsg = tmpMsg.c_str();
-#else
-        // through ShiftJis
-        retMsg = msg.c_str();
-#endif
-        return retMsg;
+        return msg;
     }
 
     /**
@@ -95,33 +85,30 @@ namespace is
     {
     protected:
         ATL::CString mFullMsg; // 表示されるFullメッセージ
-        ATL::CString mMsg;     // エラーメッセージ
-        ATL::CString mFunc;    // エラーが発生した関数名
-        ATL::CString mFile;    // エラーが発生したファイル名
+        std::string  mMsg;     // エラーメッセージ
+        std::string  mFunc;    // エラーが発生した関数名
+        std::string  mFile;    // エラーが発生したファイル名
         int mLine;             // エラーが発生した行番号
 
-        HRESULT mResult; // WindowsのHRESULTハンドル
+        HRESULT mHr; // WindowsのHRESULTハンドル
     public:
         ComHrException(HRESULT hr, const std::string &msg, const std::string &func, const std::string &file, int line)
-            : mResult(hr), mMsg(msg.c_str()), mFunc(func.c_str()), mFile(file.c_str()), mLine(line)
+            : mHr(hr), mMsg(msg), mFunc(func), mFile(file), mLine(line)
         {
-#if (defined(UNICODE) || defined(_UNICODE)) && !defined(_MBCS)
-            std::wostringstream woss;
-            woss << GetComHrErrorString(mResult).GetString() << L" in "
-                    << mFunc.GetString() << L":" << mLine << std::endl;
-            woss << mMsg.GetString() << std::endl;
-            mFullMsg = woss.str().c_str();
-#else
             std::ostringstream oss;
-            oss << GetComHrErrorString(mResult).GetString() << " in "
-                << mFunc.GetString() << ":" << mLine << std::endl;
-            oss << mMsg.GetString() << std::endl;
-            mFullMsg = oss.str().c_str();
+            oss << GetComHrErrorString(mHr) << " in "
+                << mFunc << ":" << mLine << std::endl;
+            oss << mMsg << std::endl;
+
+#if (defined(UNICODE) || defined(_UNICODE)) && !defined(_MBCS)
+             mFullMsg =  is::CvtShiftJisToUtf16(oss.str()).c_str();
+#else
+             mFullMsg = oss.str().c_str();
 #endif
         }
 
         virtual ~ComHrException() noexcept {}
-        virtual LPTCSTR What() const noexcept { return mFullMsg.GetString(); }
-        HRESULT GetHrError() const { return mResult; }
+        virtual const TCHAR * What() const noexcept { return mFullMsg.GetString(); }
+        HRESULT GetHrError() const { return mHr; }
     };
 }

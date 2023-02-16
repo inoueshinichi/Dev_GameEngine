@@ -60,7 +60,7 @@ private:                                       \
 
 #if defined(_MSC_VER)
     #include <clocale>
-    #define IS_DEFINE_SHIFTJIS_TO_UTF8 std::local::global(std::local(""));
+    #define IS_DEFINE_SHIFTJIS_TO_UTF8 std::locale::global(std::local(""));
 #else
     #define IS_DEFINE_SHIFTJIS_TO_UTF8
 #endif

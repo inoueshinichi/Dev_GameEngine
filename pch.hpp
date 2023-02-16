@@ -15,6 +15,7 @@
 #include <windows_handler.hpp>
 #include <win_api_exception.hpp>
 #include <com_hr_exception.hpp>
+#include <exception.hpp>
 
 namespace is
 {
