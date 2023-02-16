@@ -1,5 +1,5 @@
 # Dev_WinNativeGuiWithXaml
-C++NativeDesktopApp with Xaml Island by `WinUI2`
+C++NativeDesktopApp with `Xaml Island` by `WinUI2`
 
 特長
 + `WinUI2`を用いたNativeDesktopApp + XAML UI. 
