@@ -19,7 +19,6 @@
 #include <instance.hpp>
 #include <menu.hpp>
 #include <pen.hpp>
-#include <result.hpp>
 #include <small_icon.hpp>
 #include <window.hpp>
 
