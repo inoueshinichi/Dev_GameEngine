@@ -10,7 +10,7 @@ Win32APIのオブジェクト指向プログラムとXAML_UI(UWP)の融合
 + WinAPIとCOM(by WinRT)をベースとしたプログラム
 
 要件
-+ >= Windows 10 1903
++ \>= Windows 10 1903
 + Visual Studio 2019
 + C++17
 + Windows SDK (Windows API, Windows Runtime API(`WinRT`))
