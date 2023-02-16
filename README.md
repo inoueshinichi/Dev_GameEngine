@@ -26,6 +26,7 @@ C++NativeDesktopApp with `Xaml Island` by `WinUI2`
 | :-- | :-- |
 | (C++/)WinRT(公式) | https://learn.microsoft.com/ja-jp/windows/uwp/cpp-and-winrt-apis/intro-to-using-cpp-with-winrt |
 | Xaml Island(公式) | https://learn.microsoft.com/ja-jp/windows/apps/desktop/modernize/xaml-islands |
+| Xaml Islandの使い方 | https://qiita.com/cubeundcube/items/93c210f8516c9468f5e5 |
 | MSIXパッケージ(公式) | https://learn.microsoft.com/ja-jp/windows/msix/overview |
 | WinUI(公式) | https://learn.microsoft.com/ja-jp/windows/apps/winui/ |
 | WinUI3プロジェクトの作成(公式) | https://learn.microsoft.com/ja-jp/windows/apps/winui/winui3/create-your-first-winui3-app?source=recommendations |
