@@ -15,6 +15,10 @@ int main(int argc, char** argv)
 {
     IS_DEFINE_SHIFTJIS_TO_UTF8
 
+    // MainThreadでXamlホストを展開
+    init_apartment(apartment_type::single_threaded);
+    WindowsXamlManager winXamlManager = WindowsXamlManager::InitializeForCurrentThread();
+
     is::Application app(argc, argv);
 
     return app.Exe();
