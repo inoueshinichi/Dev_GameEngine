@@ -11,5 +11,17 @@
 #pragma once
 #include <framework.hpp>
 #include <defs.hpp>
-#include <trans_char.hpp>
+#include <transform_charactor.hpp>
 #include <windows_handler.hpp>
+#include <win_api_exception.hpp>
+#include <com_hr_exception.hpp>
+
+namespace is
+{
+    // 名前からXamlコントロールを特定するテンプレート
+    template <typename T>
+    T Element(const WCHAR *name)
+    {
+        return _xamlroot.Content().as<Panel>().FindName(name).as<T>();
+    }
+}
