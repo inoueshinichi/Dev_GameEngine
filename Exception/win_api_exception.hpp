@@ -53,8 +53,7 @@ namespace is
      */
     inline CString GetWinApiErrorString(DWORD errorCode)
     {
-        constexpr int BUFFER_LEN = 1024;
-        TCHAR tszMsgBuff[BUFFER_LEN];
+        LPVOID lpMsgBuf;
         DWORD dwChars; // Number of chars returns;
 
         /**
@@ -70,13 +69,13 @@ namespace is
          */
         dwChars = ::FormatMessage(
             FORMAT_MESSAGE_ALLOCATE_BUFFER |   // テキストのメモリ割り当てを要求
-                FORMAT_MESSAGE_FROM_SYSTEM |   // エラーメッセージはWindowsが用意しているものを使用
-                FORMAT_MESSAGE_IGNORE_INSERTS, // 次の引数を無視してエラーコードに対するエラーメッセージを作成する
+            FORMAT_MESSAGE_FROM_SYSTEM |       // エラーメッセージはWindowsが用意しているものを使用
+            FORMAT_MESSAGE_IGNORE_INSERTS,     // 次の引数を無視してエラーコードに対するエラーメッセージを作成する
             NULL,
             errorCode,
             MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // 言語(日本語)を設定
-            tszMsgBuff,                                // メッセージテキストが保存されるバッファへのポインタ
-            BUFFER_LEN,
+            (LPTSTR)&lpMsgBuf,                         // メッセージテキストが保存されるバッファへのポインタ
+            0,
             NULL);
 
         if (dwChars == 0)
@@ -100,12 +99,17 @@ namespace is
                 NULL,
                 errorCode,
                 MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // 言語(日本語)を設定
-                tszMsgBuff,
-                BUFFER_LEN,
+                (LPTSTR)&lpMsgBuf,
+                0,
                 NULL);
         }
 
-        CString errorMsg(tszMsgBuff);
+        // コピー
+        CString errorMsg((LPTSTR)&lpMsgBuf);
+
+        // ヒープメモリ解放
+        LocalFree(lpMsgBuf);
+
         return errorMsg;
     }
 
