@@ -1,40 +1,125 @@
 # Dev_GameEngine
 OpenGL, DirectX12, Metalによる包括的なレンダリングエンジンの作成
 
-## アーキテクチャ
-+ マルチスレッド & イベントループ
-+ イベントクラスとイベントディスパッチャー
-+ 抽象基底クラスと各CGフレームワークを具体クラスで構成(基本機能はBaseクラスで実装)
-+ 行列は行優先表現に統一(数学的に B@Aは, コード上でA@Bになる)
-+ 継承(エクステンド)と委譲(コンポーネント)の両方を利用する. (基本機能は, コンポーネントで機能追加の方針で)
-+ 継承は最小限で構成
-+ CoordinateContextによる座標系定義の切り替え(Left or Light, Forward-Right-Up)
+## 背景
++ 3DCVという観点から興味があった
++ 中身の実装部分を理解したい
 
-## 機能カテゴリー
+## 目的
++ CGの勉強
++ Linux(OpenGL), MacOS(Metal), DirectX12(Windows)のクロスプラットフォームゲームエンジンの勉強
++ AR・VRの勉強
+
+## ロードマップ
+| マイルストン | 内容 | 達成状況 |
+| :-- | :-- | :-- |
+| 0合目 | 大まかな要件定義 | - |
+| 1合目 | 詳細な要件定義 | - |
+| 2合目 | 非機能要件の定義 | - |
+| 3合目 | アーキテクチャ設計 | - |
+| 3合目 | 各種クラスの洗い出し | - |
+| 4合目 | デザインパターンの適用箇所の検討 | - |
+| 5合目 | 抽象クラスの実装 | - |
+| 6合目 | Windows環境でOS機能を使ってUI機能の実装 | - |
+| 7合目 | Windows環境でEvent&Dispatcher機能の実装 | - |
+| 8合目 | Windows環境でDirectX12による基本的な描画ループを実装 | - |
+| 9合目 | Windows環境でOpenGLによる基本的な描画ループを実装 | - |
+| 10合目 | MacOS/Linux環境でGTKによるUI機能の実装 | - |
+| 11合目 | MacOS環境でMetalによる基本的な描画ループを実装 | - |
+| 12合目 | MacOS/Linux環境でGTKによるEvent&Dispatcher機能の実装 | - |
+| 13合目 | Actor,Component,Renderer,Pipelineの実装 | - |
+| 14合目 | CoordinateContext,Math,Projectionの実装 | - |
+| 11合目 | Windows環境でVertexArray,Shader,Mesh,Textureの実装 | - |
+| 11合目 | AudioSystem,InputSystem,Camera,Lightingの実装 | - |
+| 11合目 | Collision,PhysWorld,Skeleton,Animationの実装 | - |
+| 11合目 | NetworkSytemの実装| - |
+| 11合目 | 各種PipeLine用Shaderを実装 | - |
+| 11合目 | | - |
+| 11合目 | | - |
+| 11合目 | | - |
+| 11合目 | | - |
+| 11合目 | | - |
+| 11合目 | | - |
+| 11合目 | | - |
+| 11合目 | | - |
+| 11合目 | | - |
+| 11合目 | | - |
+| 11合目 | | - |
+
++ ....
+
+
+## 機能要件
 | カテゴリ | 用途 |
+| :-- | :-- |
 | Widget | 画面機能 |
 | Game | ゲームエンジンの中核 |
-| Renderer | 描画機能 |
-| RenderingPipeline | Renderer参加, 各種Shader機能の統括 |
+| Renderer | 描画機能. パイプラインや描画用リソースを管理 |
+| Pipeline | レンダリングパイプライン. 各種Shader機能の統括 |
+| Math | 基本関数,Dot,Cross,回転行列,クォータニオン,回転ベクトル,オイラー角 |
 | Shader | 描画パイプライン用のシェーダの窓口 |
-| CoordinateContext | 座標系定義の切り替え |
+| ProjectionContext | 3Dから2D画面への投影方法, パラメータを担当. カメラ座標系からNDC座標系への変換. |
 | VertexArray | 頂点属性 |
 | Mesh | 3Dメッシュ |
 | Texture | 2Dスプライト |
 | Actor | アクター |
 | Component | アクターに機能追加 |
-| Camera | 視点操作, 透視投影 |
+| Camera | 視点操作 |
 | Lighting | 環境光, 平行光, 点光源, 拡散反射, 鏡面反射 |
 | Event | 各種OSイベント |
 | EventDispatcher | プロセスキューから取り出したイベント(メッセージ)を所属するイベントループに渡す |
 | AudioSystem | 音源 2D, 3D |
 | InputSystem | 各種コントローラ等からの入力処理 |
 | NetworkSystem | 各種ネットワーク関連を統括 |
+| ModelConverter | 3Dモデルファイルのコンバーター |
+| Skeleton | スケルトンモデル |
+| Animation | アニメーション |
+| Collision | 衝突検知 |
+| PhysWorld | 物理演算 |
 
 
+## アーキテクチャ
++ Windows環境のUIはOS機能を使用. Unix環境のUIはGTKを使用.
++ シングルスレッド型イベントループ (できればマルチスレッドでUI描画とゲームエンジンの描画を切り離したいが...)
++ イベントクラスとイベントディスパッチャー
++ 抽象基底クラスと各CGフレームワークを具体クラスで構成(基本機能はBaseクラスで実装)
++ 行列は行優先表現に統一(数学的に B@Aは, コード上でA@Bになる)
++ 継承(エクステンド)と委譲(コンポーネント)の両方を利用する. (基本機能は, コンポーネントで機能追加の方針で)
++ 継承は最小限に済ませる
++ ProjectionContextにより透視投影変換やZバッファの設定によるNDC定義を変更する.
++ Position等もすべてベクトルクラスで管理する.
++ 演算時の浮動小数点数は, floatを使用する.
+
+## ワールド及びモデル座標系定義は, DirecX12, Metalスタイルを選定
++ 座標系: 左手, Forward: z, Right: x, Up: y
+
+## カメラ座標系の座標系定義は, UE系を採用
++ 座標系: 左手, Forward: -z, Right: x, Up: -y
+
+## NDCの座標系定義
++ 座標系: 右手, Forward: -z(Inverse Z), Right: x, Up: -y
+
+## ビューポートの座標定義
++ zバッファはマイナスな程手前にある.
++ 左上原点で, ↓に+y, →に+z
 
 
+## 非機能要件
++ 変数名, 関数名はCamel記法 : myValue, myMethod()
++ プライベートは名前の先頭に_をつける : _myValue, _myMethod()
++ C++ == 20
++ CMake > *
++ UIエンジン GTK @ Unix > *
++ サウンドエンジン FMOD > *
++ OpenGL @ Linux > *
++ DirectX12 @ Windows > *
++ Metal @ MacOS > *
 
+## 使用ツール
++ Visual Studio 2022
++ Blender (3Dモデル作成)
++ UML
++ WanderMax EdrawMax (クラス図)
 
 ## 下記のXaml Islandは, 終了. '23/11以降, このレポジトリは無関係とする
 
