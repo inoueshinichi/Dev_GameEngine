@@ -1,4 +1,43 @@
-# Dev_WinNativeGuiWithXaml
+# Dev_GameEngine
+OpenGL, DirectX12, Metalによる包括的なレンダリングエンジンの作成
+
+## アーキテクチャ
++ マルチスレッド & イベントループ
++ イベントクラスとイベントディスパッチャー
++ 抽象基底クラスと各CGフレームワークを具体クラスで構成(基本機能はBaseクラスで実装)
++ 行列は行優先表現に統一(数学的に B@Aは, コード上でA@Bになる)
++ 継承(エクステンド)と委譲(コンポーネント)の両方を利用する. (基本機能は, コンポーネントで機能追加の方針で)
++ 継承は最小限で構成
++ CoordinateContextによる座標系定義の切り替え(Left or Light, Forward-Right-Up)
+
+## 機能カテゴリー
+| カテゴリ | 用途 |
+| Widget | 画面機能 |
+| Game | ゲームエンジンの中核 |
+| Renderer | 描画機能 |
+| RenderingPipeline | Renderer参加, 各種Shader機能の統括 |
+| Shader | 描画パイプライン用のシェーダの窓口 |
+| CoordinateContext | 座標系定義の切り替え |
+| VertexArray | 頂点属性 |
+| Mesh | 3Dメッシュ |
+| Texture | 2Dスプライト |
+| Actor | アクター |
+| Component | アクターに機能追加 |
+| Camera | 視点操作, 透視投影 |
+| Lighting | 環境光, 平行光, 点光源, 拡散反射, 鏡面反射 |
+| Event | 各種OSイベント |
+| EventDispatcher | プロセスキューから取り出したイベント(メッセージ)を所属するイベントループに渡す |
+| AudioSystem | 音源 2D, 3D |
+| InputSystem | 各種コントローラ等からの入力処理 |
+| NetworkSystem | 各種ネットワーク関連を統括 |
+
+
+
+
+
+
+## 下記のXaml Islandは, 終了. '23/11以降, このレポジトリは無関係とする
+
 C++NativeDesktopApp with `Xaml Island` by `WinUI2`
 
 特長
