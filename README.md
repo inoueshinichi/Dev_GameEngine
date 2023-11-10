@@ -1,5 +1,6 @@
 # Dev_GameEngine
-OpenGL, DirectX12, Metalによる包括的なレンダリングエンジンの作成
++ OpenGL, DirectX12, Metalによる包括的なレンダリングエンジンの作成
++ GTK, WindowsOS, QuartsによるUIの作詞絵
 
 ## 参考
 + MacOS コア描画エンジン https://ja.wikipedia.org/wiki/Quartz
