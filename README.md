@@ -2,7 +2,8 @@
 OpenGL, DirectX12, Metalによる包括的なレンダリングエンジンの作成
 
 ## 参考
-+ 
++ MacOS コア描画エンジン https://ja.wikipedia.org/wiki/Quartz
++ GTK Unix系の描画エンジン
 
 ## 背景
 + 3DCVという観点から興味があった
