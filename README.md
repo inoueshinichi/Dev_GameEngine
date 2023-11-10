@@ -17,6 +17,9 @@
 + Linux(OpenGL), MacOS(Metal), DirectX12(Windows)のクロスプラットフォームゲームエンジンの勉強
 + AR・VRの勉強
 
+## 終了条件
++ Mac,Linux,Windowsのそれぞれの環境で3DなFPSシューティングゲームを完成させる
+
 ## ロードマップ
 | マイルストン | 内容 | 達成状況 |
 | :-- | :-- | :-- |
